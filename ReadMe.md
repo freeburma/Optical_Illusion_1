@@ -1,4 +1,6 @@
-### Optical Illusion 
+### Optical Illusion (Coding Challenge)
+
+![plot](./screenshot.png)
 
 <p>
 When I read the article on MSN.com, I saw an Optical Illusion article. I did challenge myself to use JavaScript. 
