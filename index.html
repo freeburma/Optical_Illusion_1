@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Visual Illusion #1</title>
+    <link href="./style.css" rel="stylesheet"  />
+    <!-- Ref: -->
+</head>
+<body>
+    <div class="container">
+        <div id="containerID" class="containerSVG" >
+            <!-- <svg>
+                <circle cx="20" cy="20" r="16" />
+                <circle cx="22" cy="22" r="16" />
+                <circle cx="22" cy="22" r="16" />
+            </svg>             -->
+        </div><!-- end container -->
+
+        <div class="control">
+           
+            <div class="row">
+                <input id="countNumberID" type="text" value="23" placeholder="Enter a number" />
+                <input type="submit" value="Enter" onclick="ManualDraw(false)" />
+            </div>
+
+
+            <div class="row">
+                <input type="button" value="Automatic Drawing" onclick="IsDrawing(true)" />
+                <input type="button" value="Pause" onclick="IsDrawing(false)" />
+            </div>
+
+        </div>
+    </div><!-- end container -->
+
+    <script>
+        
+       
+        let rotateBy_I = 270; 
+        let counter = 0 /// counter = 23 is magic number
+        let countNumberID = document.querySelector('#countNumberID'); 
+        let containerID = document.querySelector('#containerID'); 
+
+        let isDraw; 
+        let automaticDraw;
+
+        /// Setting the default value 
+        // countNumberID.value = 23; 
+
+        function createSVGCircle(svgNS, cx, cy, r)
+        {
+            let myCircle = document.createElementNS(svgNS, "circle"); 
+            myCircle.setAttributeNS(null, "cx", cx); 
+            myCircle.setAttributeNS(null, "cy", cy); 
+            myCircle.setAttributeNS(null, "r", r); 
+
+            return myCircle; 
+        }// end createSVGCircle()
+        
+
+        function draw(degree)
+        {
+            for (let j = 1; j <= 15; j++)
+            {
+
+                for (let i = 1; i <= 15; i++)
+                {
+                    
+                    let svgNS = "http://www.w3.org/2000/svg"; 
+                    let mySVG = document.createElementNS(svgNS, "svg"); 
+
+
+                    let myCircle = createSVGCircle(svgNS, 20, 20, 16); 
+                    let myCircle2 = createSVGCircle(svgNS, 20, 20, 16); 
+                    let myCircle3 = createSVGCircle(svgNS, 20, 20, 16); 
+
+
+                    mySVG.appendChild(myCircle); 
+                    mySVG.appendChild(myCircle2); 
+                    mySVG.appendChild(myCircle3); 
+                    
+                    
+                    rotateBy_I += degree;
+                    if (rotateBy_I >= 360.01)
+                    {
+                        rotateBy_I = 0; 
+                    }
+                
+                    rotateBy_I = Math.floor(rotateBy_I);
+
+                    mySVG.style.transform = `rotate(${rotateBy_I}deg)`; 
+
+                    document.getElementById('containerID').appendChild(mySVG); 
+                    // console.log(`i: ${[i]} => ${rotateBy_I}`);
+                    
+                }// end for 
+
+                // console.log('============================\n');
+                // rotateBy_I = rotateBy_J;
+
+            }// end for 
+        }// end draw()
+
+
+
+        
+
+        ManualDraw(isDrawing=23);
+
+
+        function IsDrawing(isDrawing)
+        {
+            isDraw = isDrawing; 
+
+            if (isDraw)
+            {
+                automaticDraw = setInterval(() => 
+                {
+                    
+                    // counter += 0.1;
+                    counter += 1;
+                    counter = Math.round(counter * 100) / 100; // Rounding to 2 decimal places
+                    countNumberID.value = counter;
+                    containerID.innerHTML = ""; 
+
+                    if (counter >= 360)
+                    {
+                        counter = 0; 
+                    }
+
+                    draw(counter); 
+                    
+                    console.log(`Count: ${counter}`);
+                }, 2500); 
+            }
+            else 
+            {
+                cancelTimer(); 
+            }// end if 
+
+            console.log(`IsDraw ${isDraw}`);
+        }// AutomaticDrawing()
+
+        function cancelTimer()
+        {
+            if (automaticDraw != null)
+            {
+                clearInterval(automaticDraw); 
+            }
+        }// end cancelTimer()
+
+        function ManualDraw(isDrawing=23)
+        {
+            cancelTimer(); 
+
+            let num = countNumberID.value; 
+
+            for (let i = 1; i <= num; i++)
+            {
+                containerID.innerHTML = ""; 
+                draw(i); 
+
+                isDraw = false; 
+            }// end for 
+
+            console.log(`Degree ${num}`);
+        }// end ManualDraw()
+
+
+       
+
+    
+
+           
+        
+        
+    </script>
+
+</body>
+</html>
